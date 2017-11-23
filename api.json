@@ -1,0 +1,12 @@
+{
+	"GET": {
+		"/": "returns readme",
+		"/metrics": "returns prometheus metrics",
+		"/histogram/{num}": "Sets histogram values",
+		"/summary/{num}": "Sets summary values",
+		"/counter/{num}": "adds value to total counter sum",
+		"/gauge/+/{num}": "adds value to total gauge sum",
+		"/gauge/-/{num}": "subtracts value from total gauge sum",
+		"/gauge/=/{num}": "setts gauge value"
+	}
+}
