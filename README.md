@@ -29,7 +29,7 @@ python app.py
 ```
 
 ## DOCKER
-The build Docker image can be found https://hub.docker.com/r/dirkjkb/python-prometheus-client/.
+The build Docker image can be found https://hub.docker.com/r/dirkjkb/python-prometheus-sample/.
 You can also build it with the following commands.
 ```
 docker build -t sample:prometheus-client .
