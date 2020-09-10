@@ -1,53 +1,47 @@
-from bottle import Bottle
+
+from uvicorn import run
+from fastapi import FastAPI
+
 from prometheus_client import generate_latest, REGISTRY, Counter, Gauge, Histogram, Summary
 
-application = Bottle()
-COUNTER = Counter('test_counter', 'count')
-GAUGE = Gauge('test_gauge', 'gauge')
-HISTOGRAM = Histogram('test_histogram', 'histogram')
-SUMMARY = Summary('test_summary', 'summary')
+app = FastAPI()
+
+PROMETHEUS_COUNTER: Counter = Counter('test_counter', 'count')
+PROMETHEUS_GAUGE: Gauge  = Gauge('test_gauge', 'gauge')
+PROMETHEUS_HISTOGRAM: Histogram = Histogram('test_histogram', 'histogram')
+PROMETHEUS_SUMMARY: Summary = Summary('test_summary', 'summary')
 
 
-@application.get('/summary/<num>')
-def histogram(num):
-    SUMMARY.observe(int(num))
+@app.get('/summary/{num}')
+def summary(num: int) -> None:
+    PROMETHEUS_SUMMARY.observe(num)
 
 
-@application.get('/histogram/<num>')
-def histogram(num):
-    HISTOGRAM.observe(int(num))
+@app.get('/histogram/{num}')
+def histogram(num: int) -> None:
+    PROMETHEUS_HISTOGRAM.observe(num)
 
 
-@application.get('/gauge/+/<num>')
-def gauge_inc(num):
-    GAUGE.inc(int(num))
+@app.get('/gauge/+/{num}')
+def gauge_inc(num: int) -> None:
+    PROMETHEUS_GAUGE.inc(num)
 
 
-@application.get('/gauge/-/<num>')
-def gauge_dec(num):
-    GAUGE.dec(int(num))
+@app.get('/gauge/-/{num}')
+def gauge_dec(num: int) -> None:
+    PROMETHEUS_GAUGE.dec(num)
 
 
-@application.get('/gauge/=/<num>')
-def gauge_set(num):
-    GAUGE.set(int(num))
+@app.get('/gauge/=/{num}')
+def gauge_set(num: int) -> None:
+    PROMETHEUS_GAUGE.set(num)
 
 
-@application.get('/counter/<num>')
-def inc(num):
-    COUNTER.inc(int(num))
+@app.get('/counter/{num}')
+def inc(num: int) -> None:
+    PROMETHEUS_COUNTER.inc(num)
 
 
-@application.get('/')
-def index():
-    with open('api.json') as f:
-        return f.read()
-
-
-@application.get('/metrics')
+@app.get('/metrics')
 def metrics():
     return generate_latest(REGISTRY)
-
-
-if __name__ == '__main__':
-    application.run(host='0.0.0.0', port=5000, reloader=True)

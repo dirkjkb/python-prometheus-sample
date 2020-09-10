@@ -8,7 +8,7 @@ For simplicity this Api only contains GET methods.
 
 | HTTP METHOD | URL              | Response                              |
 | ----------- | ---------------- | ------------------------------------- |
-| GET         | /                | returns api                           |
+| GET         | /docs            | returns the open api definition       |
 | GET         | /metrics         | returns prometheus metrics            |
 | GET         | /histogram/{num} | Sets histogram values                 |
 | GET         | /summary/{num}   | Sets summary values                   |
@@ -21,11 +21,13 @@ For simplicity this Api only contains GET methods.
 
 First off all you have to install all dependencies listed in the requirements.txt
 ```
-pip install requirements.txt
+python3 -m venv venv
+source venv/bin/activate
+pip3 install -r requirements.txt
 ```
 after installing you can run it with
 ```
-python app.py
+uvicorn app:app --host 0.0.0.0 --port 8000
 ```
 
 ## DOCKER
